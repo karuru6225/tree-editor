@@ -1,0 +1,114 @@
+html {
+	height: 100%;
+	background-color: #FFFFFF;
+	overscroll-behavior: none;
+}
+
+body {
+	height: 100%;
+	background-color: #FFFFFF;
+  user-select: none;
+}
+
+#root {
+	height: 100%;
+	background-color: #FFFFFF;
+}
+
+button.gm-ui-hover-effect {
+	display :none !important;
+}
+
+.gm-style-iw.convinience,
+.gm-style-iw.superMarket {
+	font-family: Helvetica;
+	font-size: 16px;
+	color: #FFFFFF;
+	letter-spacing: 0;
+	line-height: 18px;
+	width: 156px;
+}
+.gm-style-iw.convinience a,
+.gm-style-iw.superMarket a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.gm-style-iw.convinience {
+	background-color: #579FD9;
+}
+.gm-style-iw.superMarket {
+	background-color: #60BF70;
+}
+
+.gm-style-iw-d {
+	overflow: hidden !important;
+}
+.gm-style .gm-style-iw-c {
+	padding: 6px 8px !important;
+	box-shadow: none !important;
+}
+.gm-style .gm-style-iw-t.convinience::after,
+.gm-style .gm-style-iw-t.superMarket::after {
+	background-color: transparent;
+}
+
+.gm-style .gm-style-iw-t.convinience::before,
+.gm-style .gm-style-iw-t.convinience::before {
+	background-color: #579FD9;
+	box-shadow: none;
+	content: "";
+	height: 15px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	transform: translate(-50%,-50%) rotate(-45deg);
+	width: 15px;
+}
+
+.gm-style .gm-style-iw-t.superMarket::before,
+.gm-style .gm-style-iw-t.superMarket::before {
+	background-color: #60BF70;
+	box-shadow: none;
+	content: "";
+	height: 15px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	transform: translate(-50%,-50%) rotate(-45deg);
+	width: 15px;
+}
+
+.gm-style-iw.convinience .second,
+.gm-style-iw.superMarket .second {
+	margin-top: 8px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: end;
+}
+
+.gm-style-iw.convinience .points,
+.gm-style-iw.superMarket .points {
+	margin-left: 8px;
+	margin-right: 4px;
+	display: block;
+	font-size: 28px;
+	line-height: 32px;
+	text-align: right;
+	font-family: Helvetica;
+	letter-spacing: 0;
+}
+
+.gm-style-iw.convinience .unit,
+.gm-style-iw.superMarket .unit{
+	margin: 12px 4px auto 4px;
+	font-size: 14px;
+	display: block;
+	text-align: right;
+}
+
+.gm-style img {
+	max-width: 30px;
+
+}
