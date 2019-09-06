@@ -3,7 +3,7 @@ import persistState from 'redux-sessionstorage';
 import createSagaMiddleware from 'redux-saga';
 import reducers from './reducers';
 import rootSaga from './sagas';
-import { createHashHistory } from 'history';
+// import { createHashHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
 
 /* eslint-disable no-underscore-dangle */
@@ -14,14 +14,13 @@ const composer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const history = createHashHistory();
+// export const history = createHashHistory();
 
 const store = createStore(
-  reducers(history),
+  reducers(),
   composer(
-    //persistState(),
     applyMiddleware(
-      routerMiddleware(history),
+      // routerMiddleware(history),
       sagaMiddleware
     ),
   )
