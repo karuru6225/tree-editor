@@ -1,8 +1,24 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+import ExifParser from 'exif-parser';
 
 import TreeNode from '../../models/tree-node';
+
+// A1, A2, A3, A4
+// B1, B2, B3, B4
+// 縦 横
+const PrintPageSetting = createGlobalStyle`
+  @page {
+    size: A4 portrait;
+    margin: 10mm 5mm;
+  }
+  @media print {
+    body {
+      margin: 0;
+    }
+  }
+`;
 
 const Node = styled.div`
   height: ${props => props.height}px;
@@ -16,24 +32,60 @@ const Node = styled.div`
   padding-left: ${props => props.margin / 2}px;
 `;
 
+const Wrapper = styled.div`
+  input {
+    appearance: none;
+    width: 600px;
+    height: 400px;
+    border: ${props => props.borderStyle};
+    box-sizing: border-box;
+  }
+  @media print {
+    width: 200mm !IMPORTANT;
+    height: 277mm !IMPORTANT;
+    overflow: hidden;
+    input {
+      width: 200mm !IMPORTANT;
+      height: 277mm !IMPORTANT;
+      border-color: red;
+    }
+  }
+`;
+
 const processDataTransfer = (dataTransfer) => {
   return new Promise(resolve => {
     const [
       item
     ] = dataTransfer.items;
     console.log(item);
-    if (item.kind === 'string') {
+    const {
+      kind,
+      type
+    } = item;
+    if (kind === 'string') {
       item.getAsString((data) => {
         resolve({
           type: 'string',
           data
         });
       });
-    } else if(item.kind === 'file') {
+    } else if(kind === 'file') {
       const [
         file
       ] = dataTransfer.files;
       readFile(file).then((data) => {
+        if (type === 'image/jpeg') {
+          const byteString = atob(data.split( "," )[1])
+          const arrayBuffer = new Uint8Array(byteString.length);
+          for (let i = 0; i < byteString.length; i++) {
+            arrayBuffer[i] = byteString.charCodeAt(i);// charCodeAtで配列に
+          }
+          console.log(arrayBuffer);
+          const parser = ExifParser.create(arrayBuffer.buffer);
+          try {
+            console.log('exif', parser.parse());
+          } catch { }
+        }
         resolve({
           type: 'datauri',
           data
@@ -84,27 +136,22 @@ const TreeViewer = (props) => {
   };
 
   const borderStyle = dragging ? 
-    'solid 1px #ccc'
+    'solid 2px #ccc'
     :
-    'dashed 1px #ccc';
+    'dashed 2px #ccc';
 
   return (
-    <div>
+    <Wrapper borderStyle={borderStyle}>
+      <PrintPageSetting />
       <input
-        disabled
         type="text"
-        style={{
-          appearance: 'none',
-          width: '600px',
-          height: '400px',
-          border: borderStyle,
-        }}
         onPaste={(e) => {
           processDataTransfer(e.nativeEvent.clipboardData).then(show);
         }}
         onDrop={(e) => {
           e.preventDefault();
           processDataTransfer(e.nativeEvent.dataTransfer).then(show);
+          setDragging(false);
         }}
         onDragOver={(e) => {
           e.preventDefault();
@@ -118,11 +165,12 @@ const TreeViewer = (props) => {
         onDragEnd={(e) => {
           e.preventDefault();
           console.log('dragend', e.type);
+          setDragging(false);
           return false;
         }}
       />
       <img src={dataUri} />
-    </div>
+    </Wrapper>
   );
 };
 
